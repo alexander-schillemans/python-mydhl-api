@@ -13,7 +13,6 @@ class MyDHLAPI:
         self.username = username
         self.password = password
 
-        self.demo = demo
         self.headers = {
             'Content-Type' : 'application/json',
             'Accept' : 'application/json'
