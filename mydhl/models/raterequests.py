@@ -1,5 +1,6 @@
 from .base import ObjectListModel, BaseModel
 
+
 class RateResponse(BaseModel):
 
     def __init__(self, 
@@ -8,30 +9,17 @@ class RateResponse(BaseModel):
 
         self.provider = provider if provider else Provider()
     
-    def parse(self, json):
-
-        if 'Provider' in json:
-            self.provider.parse(json['Provider'])
-        
-        return self
 
 class Provider(ObjectListModel):
 
     def __init__(self):
 
-        super(Provider, self).__init__(list=[])
+        super(Provider, self).__init__(list=[], listObject=ProviderItem)
     
     @property
     def providerItems(self):
         return self.list
     
-    def parse(self, json):
-        for item in json:
-            itemObj = ProviderItem().parse(item)
-            self.addToList(itemObj)
-        
-        return self
-
 class ProviderItem(BaseModel):
 
     def __init__(self,
@@ -43,34 +31,17 @@ class ProviderItem(BaseModel):
         self.code = code
         self.notification = notification if notification else Notification()
         self.service = service if service else Service()
-    
-    def parse(self, json):
-        super(ProviderItem, self).parse(json)
 
-        if 'Notification' in json:
-            self.notification = Notification().parse(json['Notification'])
-        
-        if 'Service' in json:
-            self.service = Service().parse(json['Service'])
-
-        return self
 
 class Notification(ObjectListModel):
 
     def __init__(self):
 
-        super(Notification, self).__init__(list=[])
+        super(Notification, self).__init__(list=[], listObject=NotificationItem)
     
     @property
     def notificationItems(self):
         return self.list
-    
-    def parse(self, json):
-        for item in json:
-            itemObj = NotificationItem().parse(item)
-            self.addToList(itemObj)
-        
-        return self
 
 class NotificationItem(BaseModel):
     def __init__(self,
@@ -85,19 +56,12 @@ class Service(ObjectListModel):
 
     def __init__(self):
 
-        super(Service, self).__init__(list=[])
+        super(Service, self).__init__(list=[], listObject=ServiceItem)
     
 
     @property
     def serviceItems(self):
         return self.list
-    
-    def parse(self, json):
-        for item in json:
-            itemObj = ServiceItem().parse(item)
-            self.addToList(itemObj)
-        
-        return self
 
 class ServiceItem(BaseModel):
 
@@ -116,17 +80,6 @@ class ServiceItem(BaseModel):
         self.deliverytime = deliverytime
         self.cutofftime = cutofftime
         self.nextbusinessdayind = nextbusinessdayind
-    
-    def parse(self, json):
-        super(ServiceItem, self).parse(json)
-
-        if 'TotalNet' in json:
-            self.totalnet = TotalNet().parse(json['TotalNet'])
-        
-        if 'Charges' in json:
-            self.charges = Charges().parse(json['Charges'])
-        
-        return self
 
 class TotalNet(BaseModel):
     
@@ -138,34 +91,26 @@ class TotalNet(BaseModel):
         self.currency = currency
         self.amount = amount
 
-class Charges(ObjectListModel):
+class Charges(BaseModel):
 
     def __init__(self,
-        currency=None
+        currency=None,
+        charge=None
     ):
 
-        super(Charges, self).__init__(list=[])
-
         self.currency = currency
-    
+        self.charge = charge if charge else ChargeList()
+
+
+class ChargeList(ObjectListModel):
+
+    def __init__(self):
+
+        super(ChargeList, self).__init__(list=[], listObject=Charge)
+
     @property
-    def chargeItems(self):
+    def charges(self):
         return self.list
-    
-    def parse(self, json):
-        super(Charges, self).parse(json)
-
-        if 'Charge' in json:
-            if isinstance(json['Charge'], dict):
-                chargeObj = Charge().parse(json['Charge'])
-                self.addToList(chargeObj)
-            elif isinstance(json['Charge'], list):
-                for charge in json['Charge']:
-                    chargeObj = Charge().parse(charge)
-                    self.addToList(chargeObj)
-        
-        return self
-
 
 class Charge(BaseModel):
 
@@ -190,7 +135,7 @@ class RateRequest(BaseModel):
 
         self.clientdetail = clientdetail if clientdetail else ClientDetail()
         self.request = request if request else Request()
-        self.requestedshipment = requestedshipment
+        self.requestedshipment = requestedshipment if requestedshipment else RequestedShipment()
 
 class ClientDetail(BaseModel):
 
@@ -328,7 +273,7 @@ class Packages(BaseModel):
 class RequestedPackages(ObjectListModel):
 
     def __init__(self):
-        super(RequestedPackages, self).__init__(list=[])
+        super(RequestedPackages, self).__init__(list=[], listObject=RequestedPackage)
     
 
     @property

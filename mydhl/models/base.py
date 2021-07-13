@@ -27,16 +27,24 @@ class BaseModel:
     def parse(self, json):
         for key, value in json.items():
             key = ''.join(e.lower() for e in key if e.isalnum())
-            if hasattr(self, key): setattr(self, key, value)
+
+            if hasattr(self, key): 
+                attrVal = getattr(self, key)
+
+                if isinstance(attrVal, BaseModel):
+                    setattr(self, key, attrVal.parse(value))
+                else:
+                    setattr(self, key, value)
 
         return self
 
 
 class ObjectListModel(BaseModel):
 
-    def __init__(self, list=[]):
+    def __init__(self, list=[], listObject=None):
 
         self.list = list
+        self.listObject = listObject
 
     def addToList(self, item):
         self.list.append(item)
@@ -53,3 +61,15 @@ class ObjectListModel(BaseModel):
     def getItemObject(self, attribute, value):
         object = getObjectWithValue(self.list, attribute, value)
         return object
+    
+    def parse(self, json):
+
+        if isinstance(json, dict):
+            itemObj = self.listObject().parse(json)
+            self.addToList(itemObj)
+        elif isinstance(json, list):
+            for item in json:
+                itemObj = self.listObject().parse(item)
+                self.addToList(itemObj)
+
+        return self
