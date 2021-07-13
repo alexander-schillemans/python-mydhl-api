@@ -5,6 +5,8 @@ import time
 
 from . import config
 
+from .endpoints.raterequests import RateRequestMethods
+
 class MyDHLAPI:
 
     def __init__(self, account, username, password):
@@ -19,6 +21,8 @@ class MyDHLAPI:
         }
 
         self.baseUrl = config.BASE_URL
+
+        self.rateRequests = RateRequestMethods(self)
     
     def setTokenHeader(self, token):
         basicStr = 'Basic {token}'.format(token=token)

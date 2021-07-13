@@ -1,14 +1,38 @@
 from .base import ObjectListModel, BaseModel
 
-class RateRequest(BaseModel):
+class RateResponse(BaseModel):
 
     def __init__(self, 
         provider=None
     ):
 
-        self.provider = provider
+        self.provider = provider if provider else Provider()
+    
+    def parse(self, json):
 
-class Provider(BaseModel):
+        if 'Provider' in json:
+            self.provider.parse(json['Provider'])
+        
+        return self
+
+class Provider(ObjectListModel):
+
+    def __init__(self):
+
+        super(Provider, self).__init__(list=[])
+    
+    @property
+    def providerItems(self):
+        return self.list
+    
+    def parse(self, json):
+        for item in json:
+            itemObj = ProviderItem().parse(item)
+            self.addToList(itemObj)
+        
+        return self
+
+class ProviderItem(BaseModel):
 
     def __init__(self,
         code=None,
@@ -19,8 +43,36 @@ class Provider(BaseModel):
         self.code = code
         self.notification = notification if notification else Notification()
         self.service = service if service else Service()
+    
+    def parse(self, json):
+        super(ProviderItem, self).parse(json)
 
-class Notification(BaseModel):
+        if 'Notification' in json:
+            self.notification = Notification().parse(json['Notification'])
+        
+        if 'Service' in json:
+            self.service = Service().parse(json['Service'])
+
+        return self
+
+class Notification(ObjectListModel):
+
+    def __init__(self):
+
+        super(Notification, self).__init__(list=[])
+    
+    @property
+    def notificationItems(self):
+        return self.list
+    
+    def parse(self, json):
+        for item in json:
+            itemObj = NotificationItem().parse(item)
+            self.addToList(itemObj)
+        
+        return self
+
+class NotificationItem(BaseModel):
     def __init__(self,
         code=None,
         message=None
@@ -33,30 +85,48 @@ class Service(ObjectListModel):
 
     def __init__(self):
 
-        super(Service, self).init__(list=[])
+        super(Service, self).__init__(list=[])
     
 
     @property
     def serviceItems(self):
         return self.list
+    
+    def parse(self, json):
+        for item in json:
+            itemObj = ServiceItem().parse(item)
+            self.addToList(itemObj)
+        
+        return self
 
 class ServiceItem(BaseModel):
 
     def __init__(self,
         type=None,
-        totalNet=None,
+        totalnet=None,
         charges=None,
-        deliveryTime=None,
-        cutoffTime=None,
-        nextBusinessDayInd=None
+        deliverytime=None,
+        cutofftime=None,
+        nextbusinessdayind=None
     ):
 
         self.type = type
-        self.totalNet = totalNet if totalNet else TotalNet()
+        self.totalnet = totalnet if totalnet else TotalNet()
         self.charges = charges if charges else Charges()
-        self.deliveryTime = deliveryTime
-        self.cutoffTime = cutoffTime
-        self.nextBusinessDayInd = nextBusinessDayInd
+        self.deliverytime = deliverytime
+        self.cutofftime = cutofftime
+        self.nextbusinessdayind = nextbusinessdayind
+    
+    def parse(self, json):
+        super(ServiceItem, self).parse(json)
+
+        if 'TotalNet' in json:
+            self.totalnet = TotalNet().parse(json['TotalNet'])
+        
+        if 'Charges' in json:
+            self.charges = Charges().parse(json['Charges'])
+        
+        return self
 
 class TotalNet(BaseModel):
     
@@ -74,22 +144,225 @@ class Charges(ObjectListModel):
         currency=None
     ):
 
-        super(Charges, self).init__(list=[])
+        super(Charges, self).__init__(list=[])
 
         self.currency = currency
     
     @property
     def chargeItems(self):
         return self.list
+    
+    def parse(self, json):
+        super(Charges, self).parse(json)
+
+        if 'Charge' in json:
+            if isinstance(json['Charge'], dict):
+                chargeObj = Charge().parse(json['Charge'])
+                self.addToList(chargeObj)
+            elif isinstance(json['Charge'], list):
+                for charge in json['Charge']:
+                    chargeObj = Charge().parse(charge)
+                    self.addToList(chargeObj)
+        
+        return self
+
 
 class Charge(BaseModel):
 
     def __init__(self,
-        chargeCode=None,
-        chargeType=None,
-        chargeAmount=None
+        chargecode=None,
+        chargetype=None,
+        chargeamount=None
     ):
 
-        self.chargeCode = chargeCode
-        self.chargeType = chargeType
-        self.chargeAmount = chargeAmount
+        self.chargecode = chargecode
+        self.chargetype = chargetype
+        self.chargeamount = chargeamount
+
+
+class RateRequest(BaseModel):
+
+    def __init__(self,
+        clientdetail=None,
+        request=None,
+        requestedshipment=None
+    ):
+
+        self.clientdetail = clientdetail if clientdetail else ClientDetail()
+        self.request = request if request else Request()
+        self.requestedshipment = requestedshipment
+
+class ClientDetail(BaseModel):
+
+    def __init__(self,
+        so=None,
+        plant=None
+    ):
+
+        self.so = so
+        self.plant = plant
+
+class Request(BaseModel):
+
+    def __init__(self,
+        serviceheader=None
+    ):
+
+        self.serviceheader = serviceheader if serviceheader else ServiceHeader()
+
+class ServiceHeader(BaseModel):
+
+    def __init__(self,
+        messagetime=None,
+        messagereference=None,
+        webstoreplatform=None,
+        webstoreplatformversion=None,
+        shippingsystemplatform=None,
+        shippingsystemplatformversion=None,
+        plugin=None,
+        pluginversion=None
+    ):
+
+        self.messagetime = messagetime
+        self.messagereference = messagereference
+        self.webstoreplatform = webstoreplatform
+        self.webstoreplatformversion = webstoreplatformversion
+        self.shippingsystemplatform = shippingsystemplatform
+        self.shippingsystemplatformversion = shippingsystemplatformversion
+        self.plugin = plugin
+        self.pluginversion = pluginversion
+
+class RequestedShipment(BaseModel):
+
+    REGULAR_PICKUP = 'REGULAR_PICKUP'
+    REQUEST_COURIER = 'REQUEST_COURIER'
+
+    MEASUREMENT_SI = 'SI'
+    MEASUREMENT_SU = 'SU'
+
+    CONTENT_DOCUMENTS = 'DOCUMENTS'
+    CONTENT_NONDOCUMENTS = 'NON_DOCUMENTS'
+
+    PAYMENT_CFR = 'CFR'
+    PAYMENT_CIF = 'CIF'
+    PAYMENT_CIP = 'CIP'
+    PAYMENT_CPT = 'CPT'
+    PAYMENT_DAF = 'DAF'
+    PAYMENT_DDP = 'DPP'
+    PAYMENT_DDU = 'DDU'
+    PAYMENT_DAP = 'DAP'
+    PAYMENT_DEQ = 'DEQ'
+    PAYMENT_DES = 'DES'
+    PAYMENT_EXW = 'EXW'
+    PAYMENT_FAS = 'FAS'
+    PAYMENT_FCA = 'FCA'
+    PAYMENT_FOB = 'FOB'
+
+    def __init__(self,
+        dropofftype=None,
+        shiptimestamp=None,
+        unitofmeasurement=None,
+        content=None,
+        paymentinfo=None,
+        nextbusinessday=None,
+        account=None,
+        ship=None,
+        packages=None
+    ):
+
+        self.dropofftypes = dropofftype
+        self.shiptimestamp = shiptimestamp
+        self.unitofmeasurement = unitofmeasurement
+        self.content = content
+        self.paymentinfo = paymentinfo
+        self.nextbusinessday = nextbusinessday
+        self.account = account,
+        self.ship = ship if ship else Ship()
+        self.packages = packages if packages else Packages()
+
+class Ship(BaseModel):
+
+    def __init__(self,
+        shipper=None,
+        recipient=None
+    ):
+
+        self.shipper = shipper if shipper else PersonalInfo()
+        self.recipient = recipient if recipient else PersonalInfo()
+
+
+class PersonalInfo(BaseModel):
+
+    def __init__(self,
+        streetlines=None,
+        streetlines2=None,
+        streetlines3=None,
+        streetname=None,
+        streetnumber=None,
+        city=None,
+        citydistrict=None,
+        stateorprovincecode=None,
+        postalcode=None,
+        countrycode=None
+    ):
+
+        self.streetlines = streetlines
+        self.streetlines2 = streetlines2
+        self.streetlines3 = streetlines3
+        self.streetname = streetname
+        self.streetnumber = streetnumber
+        self.city = city
+        self.citydistrict = citydistrict
+        self.stateorprovincecode = stateorprovincecode
+        self.postalcode = postalcode
+        self.countrycode = countrycode
+
+class Packages(BaseModel):
+
+    def __init__(self,
+        requestedpackages=None
+    ):
+        self.requestedpackages = requestedpackages if requestedpackages else RequestedPackages()
+
+
+class RequestedPackages(ObjectListModel):
+
+    def __init__(self):
+        super(RequestedPackages, self).__init__(list=[])
+    
+
+    @property
+    def packages(self):
+        return self.list
+
+class RequestedPackage(BaseModel):
+
+    def __init__(self,
+        number=None,
+        weight=None,
+        dimensions=None
+    ):
+
+        self.number = number
+        self.weight = weight if weight else Weight()
+        self.dimensions = dimensions if dimensions else Dimensions()
+
+class Weight(BaseModel):
+
+    def __init__(self,
+        value=None
+    ):
+
+        self.value = value
+
+class Dimensions(BaseModel):
+
+    def __init__(self,
+        length=None,
+        width=None,
+        height=None
+    ):
+
+        self.length = None
+        self.width = None
+        self.height = None
