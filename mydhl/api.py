@@ -4,11 +4,10 @@ import json
 import time
 
 from . import config
-from .cachehandler import CacheHandler
 
 class MyDHLAPI:
 
-    def __init__(self, account, username, password, demo=False):
+    def __init__(self, account, username, password):
 
         self.account = account
         self.username = username
@@ -16,15 +15,25 @@ class MyDHLAPI:
 
         self.demo = demo
         self.headers = {
+            'Content-Type' : 'application/json',
+            'Accept' : 'application/json'
         }
 
-        self.baseUrl = config.DEMO_URL if demo else config.BASE_URL
-        self.cacheHandler = CacheHandler()
+        self.baseUrl = config.BASE_URL
     
     def setTokenHeader(self, token):
         basicStr = 'Basic {token}'.format(token=token)
         self.headers.update({'Authorization' : basicStr})
+    
+    def acquireBasicToken(self):
+        credentialsString = '{username}:{password}'.format(username=self.username, password=self.password)
+        encodedBytes = base64.b64encode(credentialsString.encode('utf-8'))
+        encodedToken = str(encodedBytes, 'utf-8')
 
+        self.setTokenHeader(encodedToken)
+    
+    def checkHeaderTokens(self):
+        if 'Authorization' not in self.headers: self.acquireBasicToken()
 
     def doRequest(self, method, url, data=None, headers=None):
 
@@ -47,7 +56,7 @@ class MyDHLAPI:
 
     def request(self, method, url, data=None, headers=None):
 
-        # Make the request
+        self.checkHeaderTokens()
         response = self.doRequest(method, url, data, headers)
 
         if 'json' in response.headers['Content-Type']:
