@@ -7,7 +7,6 @@ def getIndexWithValue(list, attribute, value):
         if hasattr(obj, attribute):
             if getattr(obj, attribute) == value:
                 return index
-                break
     
     return None
 
@@ -17,7 +16,6 @@ def getObjectWithValue(list, attribute, value):
         if hasattr(obj, attribute):
             if getattr(obj, attribute) == value:
                 return obj
-                break
     
     return None
 
@@ -28,12 +26,9 @@ class BaseModel:
 
     def parse(self, json):
         for key, value in json.items():
-            try:
-                attr = getattr(self, key)
-                setattr(self, key, value)
-            except AttributeError:
-                continue
-        
+            key = ''.join(e.lower() for e in key if e.isalnum())
+            if hasattr(self, key): setattr(self, key, value)
+
         return self
 
 
