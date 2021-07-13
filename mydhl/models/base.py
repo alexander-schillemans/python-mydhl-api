@@ -73,3 +73,6 @@ class ObjectListModel(BaseModel):
                 self.addToList(itemObj)
 
         return self
+    
+    def items(self):
+        return self.list

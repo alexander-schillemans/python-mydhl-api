@@ -15,10 +15,7 @@ class Provider(ObjectListModel):
     def __init__(self):
 
         super(Provider, self).__init__(list=[], listObject=ProviderItem)
-    
-    @property
-    def providerItems(self):
-        return self.list
+
     
 class ProviderItem(BaseModel):
 
@@ -39,9 +36,6 @@ class Notification(ObjectListModel):
 
         super(Notification, self).__init__(list=[], listObject=NotificationItem)
     
-    @property
-    def notificationItems(self):
-        return self.list
 
 class NotificationItem(BaseModel):
     def __init__(self,
@@ -58,11 +52,6 @@ class Service(ObjectListModel):
 
         super(Service, self).__init__(list=[], listObject=ServiceItem)
     
-
-    @property
-    def serviceItems(self):
-        return self.list
-
 class ServiceItem(BaseModel):
 
     def __init__(self,
@@ -108,9 +97,6 @@ class ChargeList(ObjectListModel):
 
         super(ChargeList, self).__init__(list=[], listObject=Charge)
 
-    @property
-    def charges(self):
-        return self.list
 
 class Charge(BaseModel):
 
@@ -276,10 +262,6 @@ class RequestedPackages(ObjectListModel):
         super(RequestedPackages, self).__init__(list=[], listObject=RequestedPackage)
     
 
-    @property
-    def packages(self):
-        return self.list
-
 class RequestedPackage(BaseModel):
 
     def __init__(self,
@@ -308,6 +290,6 @@ class Dimensions(BaseModel):
         height=None
     ):
 
-        self.length = None
-        self.width = None
-        self.height = None
+        self.length = length
+        self.width = width
+        self.height = height
