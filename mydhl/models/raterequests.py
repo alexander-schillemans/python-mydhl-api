@@ -1,6 +1,6 @@
 from mydhl.models.shipmentrequests import Address
 from .base import ObjectListModel, BaseModel
-from .general import ClientDetail, Request, Address
+from .general import ClientDetail, Request, Address, Notification, NotificationItem
 
 
 class RateResponse(BaseModel):
@@ -30,23 +30,6 @@ class ProviderItem(BaseModel):
         self.code = code
         self.notification = notification if notification else Notification()
         self.service = service if service else Service()
-
-
-class Notification(ObjectListModel):
-
-    def __init__(self):
-
-        super(Notification, self).__init__(list=[], listObject=NotificationItem)
-    
-
-class NotificationItem(BaseModel):
-    def __init__(self,
-        code=None,
-        message=None
-    ):
-
-        self.code = code
-        self.message = message
 
 class Service(ObjectListModel):
 
@@ -166,6 +149,14 @@ class Packages(BaseModel):
     ):
         self.requestedPackages = requestedPackages if requestedPackages else RequestedPackages()
 
+    def items(self):
+        return self.requestedPackages.items()
+
+    def remove(self, item):
+        return self.packageResult.remove(item)
+        
+    def add(self, item):
+        return self.requestedPackages.add(item)
 
 class RequestedPackages(ObjectListModel):
 
@@ -176,9 +167,10 @@ class RequestedPackages(ObjectListModel):
 class RequestedPackage(BaseModel):
 
     def __init__(self,
+        _number=None,
         weight=None,
         dimensions=None
     ):
-
+        self._number = _number
         self.weight = weight if weight else Weight()
         self.dimensions = dimensions if dimensions else Dimensions()

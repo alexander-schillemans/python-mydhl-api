@@ -51,3 +51,60 @@ class RegistrationNumberType:
 
 class NotificationMethods:
     EMAIL = 'EMAIL'
+
+PRODUCTS = {
+
+    'TDK' : 'Express 9:00 - Documents',
+    'K' : 'Express 9:00 - Documents',
+
+    'TDE' : 'Express 9:00 - NonDocuments',
+    'C' : 'Express 9:00 - NonDocuments',
+    'E' : 'Express 9:00 - NonDocuments',
+
+    'TDL' : 'Express 10:30',
+    'J' : 'Express 10:30 - Documents',
+    'L' : 'Express 10:30 - Documents',
+
+    'X' : 'Express 10:30 - NonDocuments',
+    'M' : 'Express 10:30 - NonDocuments',
+
+    'TDT' : 'Express 12:00 - Documents',
+    'T' : 'Express 12:00 - Documents',
+
+    'TDY' : 'Express 12:00 - NonDocuments',
+    'Y' : 'Express 12:00 - NonDocuments',
+
+    'ECX' : 'Express Worldwide',
+    'U' : 'Express Worldwide',
+
+    'DOX' : 'Express Worldwide - Documents',
+    'D' : 'Express Worldwide - Documents',
+
+    'WPX' : 'Express Worldwide - NonDocuments',
+    'S' : 'Express Worldwide - NonDocuments',
+    'P' : 'Express Worldwide - NonDocuments',
+
+    'DOK' : 'Express 9:00 - Domestic',
+    '7' : 'Express 9:00 - Domestic',
+    'I' : 'Express 9:00 - Domestic',
+    
+    'DOT' : 'Express 12:00 - Domestic',
+    '8' : 'Express 12:00 - Domestic',
+    '1' : 'Express 12:00 - Domestic',
+
+    'DOM' : 'Express 18:00 - Domestic',
+    'L' : 'Express 18:00 - Domestic',
+    'N' : 'Express 18:00 - Domestic',
+
+    'ESU' : 'Economy Select - Documents',
+    'W' : 'Economy Select - Documents',
+
+    'ESI' : 'Economy Select - NonDocuments',
+    'H' : 'Economy Select - NonDocuments',
+
+    'XPD' : 'Express Enveloppe - Documents under 0.3kg',
+    'E' : 'Express Enveloppe - Documents under 0.3kg',
+    # 'X' : 'Express Enveloppe - Documents under 0.3kg',
+
+
+}

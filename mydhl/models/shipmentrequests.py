@@ -1,5 +1,5 @@
 from .base import ObjectListModel, BaseModel
-from .general import Address, ClientDetail, Dimensions, Request, Billing, DocumentImages, CustomerBarcode, CustomerLogo, Weight, Dimensions
+from .general import Address, ClientDetail, Dimensions, Notification, Request, Billing, DocumentImages, CustomerBarcode, CustomerLogo, Weight, Dimensions
 
 class ShipmentRequest(BaseModel):
 
@@ -26,7 +26,7 @@ class RequestedShipment(BaseModel):
         paymentInfo=None,
         internationalDetail=None,
         onDemandDeliveryOptions=None,
-        ondemandDeliveryURLRequest=None,
+        onDemandDeliveryURLRequest=None,
         ship=None,
         packages=None,
         dangerousGoods=None,
@@ -42,7 +42,7 @@ class RequestedShipment(BaseModel):
         self.paymentInfo = paymentInfo
         self.internationalDetail = internationalDetail if internationalDetail else InternationalDetail()
         self.onDemandDeliveryOptions = onDemandDeliveryOptions if onDemandDeliveryOptions else OnDemandDeliveryOptions()
-        self.onDemandDeliveryURLRequest = ondemandDeliveryURLRequest
+        self.onDemandDeliveryURLRequest = onDemandDeliveryURLRequest
         self.ship = ship if ship else Ship()
         self.packages = packages if packages else ShipmentPackages()
         self.dangerousGoods = dangerousGoods if dangerousGoods else DangerousGoods()
@@ -177,9 +177,22 @@ class InternationalDetail(BaseModel):
         exportDeclaration=None
     ):
 
-        self.commodities = commodities
+        self.commodities = commodities if commodities else Commodities()
         self.content = content
         self.exportDeclaration = exportDeclaration if exportDeclaration else ExportDeclaration()
+
+class Commodities(BaseModel):
+
+    def __init__(self,
+        description=None,
+        customsValue=None,
+        USFillingTypeValue=None
+    ):
+
+        self.description = description
+        self.customsValue = customsValue
+        self.USFillingTypeValue = USFillingTypeValue
+
 
 class ExportDeclaration(BaseModel):
 
@@ -410,24 +423,45 @@ class ShipmentReference(BaseModel):
         self.shipmentReference = shipmentReference
         self.shipmentReferenceType = shipmentReferenceType
 
-class ShipmentPackages(ObjectListModel):
-
-    def __init__(self):
-        super(ShipmentPackages, self).__init__(list=[], listObject=ShipmentPackage)
-
-class ShipmentPackage(BaseModel):
+class ShipmentPackages(BaseModel):
 
     def __init__(self,
-       weight=None,
-       dimensions=None,
-       pieceIdentificationNumber=None,
-       packageContentDescription=None,
-       customerReferences=None,
-       parentPieceIdentificationNumber=None,
-       packageReferences=None
+        requestedPackages=None
     ):
 
-        self.weight = weight if weight else Weight()
+        self.requestedPackages = requestedPackages if requestedPackages else ShipmentPackage()
+
+
+    def remove(self, item):
+        return self.requestedPackages.remove(item)
+
+    def add(self, item):
+        return self.requestedPackages.add(item)
+    
+    def items(self):
+        return self.requestedPackages.items()
+
+class ShipmentPackage(ObjectListModel):
+
+    def __init__(self):
+        super(ShipmentPackage, self).__init__(list=[], listObject=ShipmentPackageItem)
+
+
+class ShipmentPackageItem(BaseModel):
+
+    def __init__(self,
+        _number=None,
+        weight=None,
+        dimensions=None,
+        pieceIdentificationNumber=None,
+        packageContentDescription=None,
+        customerReferences=None,
+        parentPieceIdentificationNumber=None,
+        packageReferences=None
+    ):
+
+        self._number = _number
+        self.weight = weight
         self.dimensions = dimensions if dimensions else Dimensions()
         self.pieceIdentificationNumber = pieceIdentificationNumber
         self.packageContentDescription = packageContentDescription
@@ -466,3 +500,84 @@ class Content(BaseModel):
         self.contentID = contentID
         self.dryIceTotalNetWeight = dryIceTotalNetWeight
         self.UNCode = UNCode
+
+
+class ShipmentResponse(BaseModel):
+
+    def __init__(self,
+        notification=None,
+        packagesResult=None,
+        labelImage=None,
+        documents=None,
+        shipmentIdentificationNumber=None,
+        dispatchConfirmationNumber=None,
+        onDemandDeliveryURL=None,
+        totalNet=None,
+        additionalInformation=None,
+        barcodeInfo=None,
+        estimatedDeliveryDate=None,
+        pickupDetails=None
+    ):
+
+        self.notification = notification if notification else Notification()
+        self.packagesResult = packagesResult if packagesResult else PackagesResult()
+        self.labelImage = labelImage if labelImage else LabelImage()
+        self.documents = documents
+        self.shipmentIdentificationNumber = shipmentIdentificationNumber
+        self.dispatchConfirmationNumber = dispatchConfirmationNumber
+        self.onDemandDeliveryURL = onDemandDeliveryURL
+        self.totalNet = totalNet
+        self.additionalInformation = additionalInformation
+        self.barcodeInfo = barcodeInfo
+        self.estimatedDeliveryDate = estimatedDeliveryDate
+        self.pickupDetails = pickupDetails
+
+class PackagesResult(BaseModel):
+
+    def __init__(self,
+        packageResult=None
+    ):
+
+        self.packageResult = packageResult if packageResult else PackageResult()
+    
+    def remove(self, item):
+        return self.packageResult.remove(item)
+        
+    def add(self, item):
+        return self.packageResult.add(item)
+
+    def items(self):
+        return self.packageResult.items()
+
+class PackageResult(ObjectListModel):
+
+    def __init__(self):
+        super(PackageResult, self).__init__(list=[], listObject=PackageResultItem)
+
+class PackageResultItem(BaseModel):
+
+    def __init__(self,
+        number=None,
+        trackingNumber=None
+    ):
+
+        self.number = number
+        self.trackingNumber = trackingNumber
+
+class LabelImage(ObjectListModel):
+    def __init__(self):
+        super(LabelImage, self).__init__(list=[], listObject=LabelImageItem)
+
+class LabelImageItem(BaseModel):
+
+    def __init__(self,
+        labelImageFormat=None,
+        graphicImage=None,
+        HTMLImage=None,
+        labelImageName=None
+    ):
+    
+        self.labelImageFormat = labelImageFormat
+        self.graphicImage = graphicImage
+        self.HTMLImage = HTMLImage
+        self.labelImageName = labelImageName

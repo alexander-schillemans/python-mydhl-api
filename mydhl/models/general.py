@@ -136,3 +136,19 @@ class Dimensions(BaseModel):
         self.length = length
         self.width = width
         self.height = height
+
+class Notification(ObjectListModel):
+
+    def __init__(self):
+
+        super(Notification, self).__init__(list=[], listObject=NotificationItem)
+    
+
+class NotificationItem(BaseModel):
+    def __init__(self,
+        code=None,
+        message=None
+    ):
+
+        self.code = code
+        self.message = message

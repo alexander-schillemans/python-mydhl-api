@@ -19,6 +19,9 @@ def getObjectWithValue(list, attribute, value):
     
     return None
 
+def formatKey(string):
+    return (string[0].upper() + string[1:]).replace('_', '@')
+
 
 #==============[BASE MODELS]=================#
 
@@ -27,7 +30,7 @@ class BaseModel:
     def parse(self, json):
         for key, value in json.items():
             lowerKey = ''.join(e.lower() for e in key if e.isalnum())
-            lowerAttrs = { k.lower() : k for k in self.__dict__.keys() }
+            lowerAttrs = { k.replace('_', '').lower() : k for k in self.__dict__.keys() }
 
             if lowerKey in lowerAttrs.keys():
                 key = lowerAttrs[lowerKey]
@@ -39,7 +42,20 @@ class BaseModel:
                     setattr(self, key, value)
 
         return self
+    
+    def getJSON(self):
 
+        dikt = {}
+        for k, v in self.__dict__.items():
+            if v:
+                k = formatKey(k)
+                if isinstance(v, BaseModel):
+                    json = v.getJSON()
+                    if json: dikt[k] = json
+                else:
+                    dikt[k] = v
+
+        return dikt if len(dikt) > 0 else None
 
 class ObjectListModel(BaseModel):
 
@@ -47,12 +63,12 @@ class ObjectListModel(BaseModel):
 
         self.list = list
         self.listObject = listObject
-
-    def addToList(self, item):
+    
+    def add(self, item):
         self.list.append(item)
         return self.list
     
-    def removeFromList(self, item):
+    def remove(self, item):
         self.list.remove(item)
         return self.list
 
@@ -68,13 +84,21 @@ class ObjectListModel(BaseModel):
 
         if isinstance(json, dict):
             itemObj = self.listObject().parse(json)
-            self.addToList(itemObj)
+            self.add(itemObj)
         elif isinstance(json, list):
             for item in json:
                 itemObj = self.listObject().parse(item)
-                self.addToList(itemObj)
+                self.add(itemObj)
 
         return self
     
+    def getJSON(self):
+        list = []
+
+        for item in self.list:
+            list.append(item.getJSON())
+        
+        return list if len(list) > 0 else None
+
     def items(self):
         return self.list
