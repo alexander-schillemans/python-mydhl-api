@@ -57,7 +57,7 @@ class ServiceItem(BaseModel):
 
     def __init__(self,
         type=None,
-        totalnet=None,
+        totalNet=None,
         charges=None,
         deliverytime=None,
         cutofftime=None,
@@ -65,7 +65,7 @@ class ServiceItem(BaseModel):
     ):
 
         self.type = type
-        self.totalnet = totalnet if totalnet else TotalNet()
+        self.totalNet = totalNet if totalNet else TotalNet()
         self.charges = charges if charges else Charges()
         self.deliverytime = deliverytime
         self.cutofftime = cutofftime
