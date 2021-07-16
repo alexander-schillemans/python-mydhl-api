@@ -52,59 +52,26 @@ class RegistrationNumberType:
 class NotificationMethods:
     EMAIL = 'EMAIL'
 
-PRODUCTS = {
-
-    'TDK' : 'Express 9:00 - Documents',
+PRODUCTS_GLOBAL = {
     'K' : 'Express 9:00 - Documents',
+    'E' : 'Express 9:00 - NonDocuments (outside EU)',
 
-    'TDE' : 'Express 9:00 - NonDocuments',
-    'C' : 'Express 9:00 - NonDocuments',
-    'E' : 'Express 9:00 - NonDocuments',
+    'L' : 'Express 10:30 - Documents (USA)',
+    'M' : 'Express 10:30 - NonDocuments (USA)',
 
-    'TDL' : 'Express 10:30',
-    'J' : 'Express 10:30 - Documents',
-    'L' : 'Express 10:30 - Documents',
-
-    'X' : 'Express 10:30 - NonDocuments',
-    'M' : 'Express 10:30 - NonDocuments',
-
-    'TDT' : 'Express 12:00 - Documents',
     'T' : 'Express 12:00 - Documents',
+    'Y' : 'Express 12:00 - NonDocuments (outside EU)',
 
-    'TDY' : 'Express 12:00 - NonDocuments',
-    'Y' : 'Express 12:00 - NonDocuments',
+    'U' : 'Express Worldwide (EU)',
+    'D' : 'Express Worldwide - Documents (outside EU)',
+    'P' : 'Express Worldwide - NonDocuments (outside EU)',
 
-    'ECX' : 'Express Worldwide',
-    'U' : 'Express Worldwide',
+    'I' : 'Express 9:00  (Domestic)',
+    '1' : 'Express 12:00 (Domestic)',
+    'N' : 'Express 18:00 (Domestic)',
 
-    'DOX' : 'Express Worldwide - Documents',
-    'D' : 'Express Worldwide - Documents',
+    'W' : 'Economy Select - Documents (EU)',
+    'H' : 'Economy Select - NonDocuments (outside EU)',
 
-    'WPX' : 'Express Worldwide - NonDocuments',
-    'S' : 'Express Worldwide - NonDocuments',
-    'P' : 'Express Worldwide - NonDocuments',
-
-    'DOK' : 'Express 9:00 - Domestic',
-    '7' : 'Express 9:00 - Domestic',
-    'I' : 'Express 9:00 - Domestic',
-    
-    'DOT' : 'Express 12:00 - Domestic',
-    '8' : 'Express 12:00 - Domestic',
-    '1' : 'Express 12:00 - Domestic',
-
-    'DOM' : 'Express 18:00 - Domestic',
-    'L' : 'Express 18:00 - Domestic',
-    'N' : 'Express 18:00 - Domestic',
-
-    'ESU' : 'Economy Select - Documents',
-    'W' : 'Economy Select - Documents',
-
-    'ESI' : 'Economy Select - NonDocuments',
-    'H' : 'Economy Select - NonDocuments',
-
-    'XPD' : 'Express Enveloppe - Documents under 0.3kg',
-    'E' : 'Express Enveloppe - Documents under 0.3kg',
-    # 'X' : 'Express Enveloppe - Documents under 0.3kg',
-
-
+    'X' : 'Express Enveloppe - Documents under 0.3kg',
 }
