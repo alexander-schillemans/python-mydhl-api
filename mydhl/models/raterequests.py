@@ -1,4 +1,5 @@
 from .base import ObjectListModel, BaseModel
+from .general import ClientDetail, Request, ServiceHeader
 
 
 class RateResponse(BaseModel):
@@ -122,46 +123,6 @@ class RateRequest(BaseModel):
         self.clientdetail = clientdetail if clientdetail else ClientDetail()
         self.request = request if request else Request()
         self.requestedshipment = requestedshipment if requestedshipment else RequestedShipment()
-
-class ClientDetail(BaseModel):
-
-    def __init__(self,
-        so=None,
-        plant=None
-    ):
-
-        self.so = so
-        self.plant = plant
-
-class Request(BaseModel):
-
-    def __init__(self,
-        serviceheader=None
-    ):
-
-        self.serviceheader = serviceheader if serviceheader else ServiceHeader()
-
-class ServiceHeader(BaseModel):
-
-    def __init__(self,
-        messagetime=None,
-        messagereference=None,
-        webstoreplatform=None,
-        webstoreplatformversion=None,
-        shippingsystemplatform=None,
-        shippingsystemplatformversion=None,
-        plugin=None,
-        pluginversion=None
-    ):
-
-        self.messagetime = messagetime
-        self.messagereference = messagereference
-        self.webstoreplatform = webstoreplatform
-        self.webstoreplatformversion = webstoreplatformversion
-        self.shippingsystemplatform = shippingsystemplatform
-        self.shippingsystemplatformversion = shippingsystemplatformversion
-        self.plugin = plugin
-        self.pluginversion = pluginversion
 
 class RequestedShipment(BaseModel):
 
