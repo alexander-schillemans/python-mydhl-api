@@ -57,19 +57,19 @@ class ServiceItem(BaseModel):
 
     def __init__(self,
         type=None,
-        totalnet=None,
+        totalNet=None,
         charges=None,
-        deliverytime=None,
-        cutofftime=None,
-        nextbusinessdayind=None
+        deliveryTime=None,
+        cutOffTime=None,
+        nextBusinessDayInd=None
     ):
 
         self.type = type
-        self.totalnet = totalnet if totalnet else TotalNet()
+        self.totalNet = totalNet if totalNet else TotalNet()
         self.charges = charges if charges else Charges()
-        self.deliverytime = deliverytime
-        self.cutofftime = cutofftime
-        self.nextbusinessdayind = nextbusinessdayind
+        self.deliveryTime = deliveryTime
+        self.cutOffTime = cutOffTime
+        self.nextBusinessDayInd = nextBusinessDayInd
 
 class TotalNet(BaseModel):
     
@@ -102,27 +102,27 @@ class ChargeList(ObjectListModel):
 class Charge(BaseModel):
 
     def __init__(self,
-        chargecode=None,
-        chargetype=None,
-        chargeamount=None
+        chargeCode=None,
+        chargeType=None,
+        chargeAmount=None
     ):
 
-        self.chargecode = chargecode
-        self.chargetype = chargetype
-        self.chargeamount = chargeamount
+        self.chargeCode = chargeCode
+        self.chargeType = chargeType
+        self.chargeAmount = chargeAmount
 
 
 class RateRequest(BaseModel):
 
     def __init__(self,
-        clientdetail=None,
+        clientDetail=None,
         request=None,
-        requestedshipment=None
+        requestedShipment=None
     ):
 
-        self.clientdetail = clientdetail if clientdetail else ClientDetail()
+        self.clientDetail = clientDetail if clientDetail else ClientDetail()
         self.request = request if request else Request()
-        self.requestedshipment = requestedshipment if requestedshipment else RequestedShipment()
+        self.requestedShipment = requestedShipment if requestedShipment else RequestedShipment()
 
 class RequestedShipment(BaseModel):
 
@@ -151,23 +151,23 @@ class RequestedShipment(BaseModel):
     PAYMENT_FOB = 'FOB'
 
     def __init__(self,
-        dropofftype=None,
-        shiptimestamp=None,
-        unitofmeasurement=None,
+        dropOffType=None,
+        shipTimestamp=None,
+        unitOfMeasurement=None,
         content=None,
-        paymentinfo=None,
-        nextbusinessday=None,
+        paymentInfo=None,
+        nextBusinessDay=None,
         account=None,
         ship=None,
         packages=None
     ):
 
-        self.dropofftypes = dropofftype
-        self.shiptimestamp = shiptimestamp
-        self.unitofmeasurement = unitofmeasurement
+        self.dropOffType = dropOffType
+        self.shipTimestamp = shipTimestamp
+        self.unitOfMeasurement = unitOfMeasurement
         self.content = content
-        self.paymentinfo = paymentinfo
-        self.nextbusinessday = nextbusinessday
+        self.paymentInfo = paymentInfo
+        self.nextBusinessDay = nextBusinessDay
         self.account = account,
         self.ship = ship if ship else Ship()
         self.packages = packages if packages else Packages()
@@ -186,35 +186,35 @@ class Ship(BaseModel):
 class PersonalInfo(BaseModel):
 
     def __init__(self,
-        streetlines=None,
-        streetlines2=None,
-        streetlines3=None,
-        streetname=None,
-        streetnumber=None,
+        streetLines=None,
+        streetLines2=None,
+        streetLines3=None,
+        streetName=None,
+        streetNumber=None,
         city=None,
-        citydistrict=None,
-        stateorprovincecode=None,
-        postalcode=None,
-        countrycode=None
+        cityDistrict=None,
+        stateOrProvinceCode=None,
+        postalCode=None,
+        countryCode=None
     ):
 
-        self.streetlines = streetlines
-        self.streetlines2 = streetlines2
-        self.streetlines3 = streetlines3
-        self.streetname = streetname
-        self.streetnumber = streetnumber
+        self.streetLines = streetLines
+        self.streetLines2 = streetLines2
+        self.streetLines3 = streetLines3
+        self.streetName = streetName
+        self.streetNumber = streetNumber
         self.city = city
-        self.citydistrict = citydistrict
-        self.stateorprovincecode = stateorprovincecode
-        self.postalcode = postalcode
-        self.countrycode = countrycode
+        self.cityDistrict = cityDistrict
+        self.stateOrProvinceCode = stateOrProvinceCode
+        self.postalCode = postalCode
+        self.countryCode = countryCode
 
 class Packages(BaseModel):
 
     def __init__(self,
-        requestedpackages=None
+        requestedPackages=None
     ):
-        self.requestedpackages = requestedpackages if requestedpackages else RequestedPackages()
+        self.requestedPackages = requestedPackages if requestedPackages else RequestedPackages()
 
 
 class RequestedPackages(ObjectListModel):

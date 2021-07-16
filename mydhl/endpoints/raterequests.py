@@ -49,39 +49,38 @@ class RateRequestMethods(APIEndpoint):
         shipJson = data['RateRequest']['RequestedShipment']['Ship']
 
         shipperJson = shipJson['Shipper']
-        if shipper.streetlines: shipperJson['Streetlines'] = shipper.streetlines
-        if shipper.streetlines2: shipperJson['Streetlines2'] = shipper.streetlines2
-        if shipper.streetlines3: shipperJson['Streetlines3'] = shipper.streetlines3
-        if shipper.streetname: shipperJson['Streetname'] = shipper.streetname
+        if shipper.streetLines: shipperJson['Streetlines'] = shipper.streetLines
+        if shipper.streetLines2: shipperJson['Streetlines2'] = shipper.streetLines2
+        if shipper.streetLines3: shipperJson['Streetlines3'] = shipper.streetLines3
+        if shipper.streetName: shipperJson['Streetname'] = shipper.streetName
         if shipper.city: shipperJson['City'] = shipper.city
-        if shipper.citydistrict: shipperJson['CityDistrict'] = shipper.citydistrict
-        if shipper.stateorprovincecode: shipperJson['StateOrProvinceCode'] = shipper.stateorprovincecode
-        if shipper.postalcode: shipperJson['PostalCode'] = shipper.postalcode
-        if shipper.countrycode: shipperJson['CountryCode'] = shipper.countrycode
+        if shipper.cityDistrict: shipperJson['CityDistrict'] = shipper.cityDistrict
+        if shipper.stateOrProvinceCode: shipperJson['StateOrProvinceCode'] = shipper.stateOrProvinceCode
+        if shipper.postalCode: shipperJson['PostalCode'] = shipper.postalCode
+        if shipper.countryCode: shipperJson['CountryCode'] = shipper.countryCode
         data['RateRequest']['RequestedShipment']['Ship']['Shipper'] = shipperJson
 
         recipientJson = shipJson['Recipient']
-        if recipient.streetlines: recipientJson['Streetlines'] = recipient.streetlines
-        if recipient.streetlines2: recipientJson['Streetlines2'] = recipient.streetlines2
-        if recipient.streetlines3: recipientJson['Streetlines3'] = recipient.streetlines3
-        if recipient.streetname: recipientJson['Streetname'] = recipient.streetname
+        if recipient.streetLines: recipientJson['Streetlines'] = recipient.streetLines
+        if recipient.streetLines2: recipientJson['Streetlines2'] = recipient.streetLines2
+        if recipient.streetLines3: recipientJson['Streetlines3'] = recipient.streetLines3
+        if recipient.streetName: recipientJson['Streetname'] = recipient.streetName
         if recipient.city: recipientJson['City'] = recipient.city
-        if recipient.citydistrict: recipientJson['CityDistrict'] = recipient.citydistrict
-        if recipient.stateorprovincecode: recipientJson['StateOrProvinceCode'] = recipient.stateorprovincecode
-        if recipient.postalcode: recipientJson['PostalCode'] = recipient.postalcode
-        if recipient.countrycode: recipientJson['CountryCode'] = recipient.countrycode
+        if recipient.cityDistrict: recipientJson['CityDistrict'] = recipient.cityDistrict
+        if recipient.stateOrProvinceCode: recipientJson['StateOrProvinceCode'] = recipient.stateOrProvinceCode
+        if recipient.postalCode: recipientJson['PostalCode'] = recipient.postalCode
+        if recipient.countryCode: recipientJson['CountryCode'] = recipient.countryCode
         data['RateRequest']['RequestedShipment']['Ship']['Recipient'] = recipientJson
 
         packageList = data['RateRequest']['RequestedShipment']['Packages']['RequestedPackages']
 
         count = 1
-        for package in packages.requestedpackages.items():
+        for package in packages.requestedPackages.items():
 
             weightJson = {}
             if package.weight.value: weightJson['Value'] = package.weight.value
 
             dimensionJson = {}
-            print(package.dimensions.length)
             if package.dimensions.length: dimensionJson['Length'] = package.dimensions.length
             if package.dimensions.width: dimensionJson['Width'] = package.dimensions.width
             if package.dimensions.height: dimensionJson['Height'] = package.dimensions.height

@@ -26,9 +26,11 @@ class BaseModel:
 
     def parse(self, json):
         for key, value in json.items():
-            key = ''.join(e.lower() for e in key if e.isalnum())
+            lowerKey = ''.join(e.lower() for e in key if e.isalnum())
+            lowerAttrs = { k.lower() : k for k in self.__dict__.keys() }
 
-            if hasattr(self, key): 
+            if lowerKey in lowerAttrs.keys():
+                key = lowerAttrs[lowerKey]
                 attrVal = getattr(self, key)
 
                 if isinstance(attrVal, BaseModel):
