@@ -1,5 +1,6 @@
+from mydhl.models.shipmentrequests import Address
 from .base import ObjectListModel, BaseModel
-from .general import ClientDetail, Request, ServiceHeader
+from .general import ClientDetail, Request, Address, Notification, NotificationItem
 
 
 class RateResponse(BaseModel):
@@ -29,23 +30,6 @@ class ProviderItem(BaseModel):
         self.code = code
         self.notification = notification if notification else Notification()
         self.service = service if service else Service()
-
-
-class Notification(ObjectListModel):
-
-    def __init__(self):
-
-        super(Notification, self).__init__(list=[], listObject=NotificationItem)
-    
-
-class NotificationItem(BaseModel):
-    def __init__(self,
-        code=None,
-        message=None
-    ):
-
-        self.code = code
-        self.message = message
 
 class Service(ObjectListModel):
 
@@ -126,30 +110,6 @@ class RateRequest(BaseModel):
 
 class RequestedShipment(BaseModel):
 
-    REGULAR_PICKUP = 'REGULAR_PICKUP'
-    REQUEST_COURIER = 'REQUEST_COURIER'
-
-    MEASUREMENT_SI = 'SI'
-    MEASUREMENT_SU = 'SU'
-
-    CONTENT_DOCUMENTS = 'DOCUMENTS'
-    CONTENT_NONDOCUMENTS = 'NON_DOCUMENTS'
-
-    PAYMENT_CFR = 'CFR'
-    PAYMENT_CIF = 'CIF'
-    PAYMENT_CIP = 'CIP'
-    PAYMENT_CPT = 'CPT'
-    PAYMENT_DAF = 'DAF'
-    PAYMENT_DDP = 'DPP'
-    PAYMENT_DDU = 'DDU'
-    PAYMENT_DAP = 'DAP'
-    PAYMENT_DEQ = 'DEQ'
-    PAYMENT_DES = 'DES'
-    PAYMENT_EXW = 'EXW'
-    PAYMENT_FAS = 'FAS'
-    PAYMENT_FCA = 'FCA'
-    PAYMENT_FOB = 'FOB'
-
     def __init__(self,
         dropOffType=None,
         shipTimestamp=None,
@@ -179,35 +139,8 @@ class Ship(BaseModel):
         recipient=None
     ):
 
-        self.shipper = shipper if shipper else PersonalInfo()
-        self.recipient = recipient if recipient else PersonalInfo()
-
-
-class PersonalInfo(BaseModel):
-
-    def __init__(self,
-        streetLines=None,
-        streetLines2=None,
-        streetLines3=None,
-        streetName=None,
-        streetNumber=None,
-        city=None,
-        cityDistrict=None,
-        stateOrProvinceCode=None,
-        postalCode=None,
-        countryCode=None
-    ):
-
-        self.streetLines = streetLines
-        self.streetLines2 = streetLines2
-        self.streetLines3 = streetLines3
-        self.streetName = streetName
-        self.streetNumber = streetNumber
-        self.city = city
-        self.cityDistrict = cityDistrict
-        self.stateOrProvinceCode = stateOrProvinceCode
-        self.postalCode = postalCode
-        self.countryCode = countryCode
+        self.shipper = shipper if shipper else Address()
+        self.recipient = recipient if recipient else Address()
 
 class Packages(BaseModel):
 
@@ -216,6 +149,14 @@ class Packages(BaseModel):
     ):
         self.requestedPackages = requestedPackages if requestedPackages else RequestedPackages()
 
+    def items(self):
+        return self.requestedPackages.items()
+
+    def remove(self, item):
+        return self.packageResult.remove(item)
+        
+    def add(self, item):
+        return self.requestedPackages.add(item)
 
 class RequestedPackages(ObjectListModel):
 
@@ -226,31 +167,10 @@ class RequestedPackages(ObjectListModel):
 class RequestedPackage(BaseModel):
 
     def __init__(self,
-        number=None,
+        _number=None,
         weight=None,
         dimensions=None
     ):
-
-        self.number = number
+        self._number = _number
         self.weight = weight if weight else Weight()
         self.dimensions = dimensions if dimensions else Dimensions()
-
-class Weight(BaseModel):
-
-    def __init__(self,
-        value=None
-    ):
-
-        self.value = value
-
-class Dimensions(BaseModel):
-
-    def __init__(self,
-        length=None,
-        width=None,
-        height=None
-    ):
-
-        self.length = length
-        self.width = width
-        self.height = height
