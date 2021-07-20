@@ -16,12 +16,10 @@ class ShipmentRequestMethods(APIEndpoint):
         recipient,
         packages,
         internationalDetail,
-        reference=None,
         shipTimestamp=None,
         dropOffType=DropOffType.REGULAR_PICKUP, 
         unitOfMeasurement=Measurement.MEASUREMENT_METRIC,
         paymentInfo=PaymentInfo.PAYMENT_DAP,
-        content=ContentType.DOCUMENTS,
         currency='EUR'
     ):
 
