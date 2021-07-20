@@ -28,6 +28,7 @@ class ShipmentRequestMethods(APIEndpoint):
         if not shipTimestamp: 
             shipTime = datetime.datetime.now() + datetime.timedelta(hours=2)
             shipTimestamp = shipTime.strftime('%Y-%m-%dT%H:%M:%S')
+        
 
         data = {
             "ShipmentRequest": {

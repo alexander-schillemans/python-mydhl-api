@@ -52,6 +52,37 @@ class RegistrationNumberType:
 class NotificationMethods:
     EMAIL = 'EMAIL'
 
+
+EU_COUNTRIES = {
+    'BE' : 'Belgium',
+    'BG' : 'Bulgaria',
+    'CZ' : 'Czechia',
+    'DK' : 'Denmark',
+    'DE' : 'Germany',
+    'EE' : 'Estonia',
+    'IE' : 'Ireland',
+    'EL' : 'Greece',
+    'ES' : 'Spain',
+    'FR' : 'France',
+    'HR' : 'Croatia',
+    'IT' : 'Italy',
+    'CY' : 'Cyprus',
+    'LV' : 'Latvia',
+    'LT' : 'Lithuania',
+    'LU' : 'Luxembourg',
+    'HU' :' Hungary',
+    'MT' : 'Malta',
+    'NL' : 'Netherlands',
+    'AT' : 'Austria',
+    'PL' : 'Poland',
+    'PT' : 'Portugal',
+    'RO' : 'Romania',
+    'SI' : 'Slovenia',
+    'FI' : 'Finland',
+    'SE': 'Sweden'
+}
+
+
 PRODUCTS_GLOBAL = {
     'K' : 'Express 9:00 - Documents',
     'E' : 'Express 9:00 - NonDocuments (outside EU)',
