@@ -9,7 +9,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 setup(
   name = 'python-mydhl-api',         
   packages=['mydhl', 'mydhl.models', 'mydhl.constants', 'mydhl.cache', 'mydhl.endpoints'],
-  version = '0.1.1',
+  version = '0.1.2',
   license='GPL-3.0-or-later',
   description = 'Wrapper for the MyDHL API (v2.5)',
   long_description=long_description,
@@ -17,7 +17,7 @@ setup(
   author = 'Alexander Schillemans',
   author_email = 'alexander.schillemans@lhs.global',
   url = 'https://github.com/alexanderlhsglobal/python-mydhl-api',
-  download_url = 'https://github.com/alexanderlhsglobal/python-mydhl-api/archive/refs/tags/0.1.1.tar.gz',
+  download_url = 'https://github.com/alexanderlhsglobal/python-mydhl-api/archive/refs/tags/0.1.2.tar.gz',
   keywords = ['mydhl', 'api', 'dhl express', 'dhl'],
   install_requires=[
           'requests',
