@@ -1,7 +1,7 @@
 from mydhl.models.shipmentrequests import Address
 from .base import ObjectListModel, BaseModel
 from .general import ClientDetail, Request, Address, Notification, NotificationItem
-
+from mydhl.constants.constants import *
 
 class RateResponse(BaseModel):
 
@@ -54,6 +54,14 @@ class ServiceItem(BaseModel):
         self.deliveryTime = deliveryTime
         self.cutOffTime = cutOffTime
         self.nextBusinessDayInd = nextBusinessDayInd
+    
+    def getTypeDisplay(self):
+
+        if self.type:
+            if self.type in PRODUCTS_GLOBAL: return PRODUCTS_GLOBAL[self.type]
+    
+        return 'TYPE_NOTFOUND'
+
 
 class TotalNet(BaseModel):
     
@@ -128,7 +136,7 @@ class RequestedShipment(BaseModel):
         self.content = content
         self.paymentInfo = paymentInfo
         self.nextBusinessDay = nextBusinessDay
-        self.account = account,
+        self.account = account
         self.ship = ship if ship else Ship()
         self.packages = packages if packages else Packages()
 
@@ -153,7 +161,7 @@ class Packages(BaseModel):
         return self.requestedPackages.items()
 
     def remove(self, item):
-        return self.packageResult.remove(item)
+        return self.requestedPackages.remove(item)
         
     def add(self, item):
         return self.requestedPackages.add(item)
