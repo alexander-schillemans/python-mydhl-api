@@ -51,7 +51,11 @@ class ShipmentRequestMethods(APIEndpoint):
             }
         }
 
+        print(data)
+
         url = self.endpoint
 
         status, headers, respJson = self.api.post(url, data)
+
+        print(respJson)
         return ShipmentResponse().parse(respJson['ShipmentResponse'])
