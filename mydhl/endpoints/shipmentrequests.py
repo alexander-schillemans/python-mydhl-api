@@ -73,12 +73,9 @@ class ShipmentRequestMethods(APIEndpoint):
             data['ShipmentRequest']['RequestedShipment']['ShipmentInfo']['PaperlessTradeImage'] = invoicePDF
             data['ShipmentRequest']['RequestedShipment']['ShipmentInfo']['DocumentImages'] = [{ 'DocumentImage' : { 'DocumentImageType' : 'DCL', 'DocumentImage' : invoicePDF, 'DocumentImageFormat' : 'PDF'}}]
 
+        url = self.endpoint
 
-        print(data)
+        status, headers, respJson = self.api.post(url, data)
 
-        # url = self.endpoint
-
-        # status, headers, respJson = self.api.post(url, data)
-
-        # print(respJson)
-        # return ShipmentResponse().parse(respJson['ShipmentResponse'])
+        print(respJson)
+        return ShipmentResponse().parse(respJson['ShipmentResponse'])

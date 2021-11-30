@@ -6,3 +6,4 @@ mydhl/cache/*
 !mydhl/cache/__init__.py
 dist/
 Pipfile.lock
+python_mydhl_api.egg-info
