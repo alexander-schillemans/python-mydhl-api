@@ -220,7 +220,7 @@ class ExportDeclaration(BaseModel):
         self.exporterCode = exporterCode
         self.exporterID = exporterID
         self.exportLicense = exportLicense
-        self.exportLineItems = exportLineItems
+        self.exportLineItems = exportLineItems if exportLineItems else ExportLineItems()
         self.exportReason = exportReason
         self.importLicense = importLicense
         self.invoiceDate = invoiceDate
@@ -233,6 +233,43 @@ class ExportDeclaration(BaseModel):
         self.recipientReference = recipientReference
         self.remarks = remarks
         self.termsOfPayment = termsOfPayment
+
+class ExportLineItems(BaseModel):
+    
+    def __init__(self,
+        exportLineItem=None
+    ):
+        
+        self.exportLineItem = exportLineItem if exportLineItem else ExportLineItem()
+
+class ExportLineItem(ObjectListModel):
+    
+    def __init__(self):
+        super().__init__(list=[], listObject=ExportLineItemDetail)
+    
+class ExportLineItemDetail(BaseModel):
+    
+    def __init__(self,
+        grossWeight=None,
+        manufacturingCountryCode=None,
+        quantityUnitOfMeasurement=None,
+        commodityCode=None,
+        quantity=None,
+        unitPrice=None,
+        itemDescription=None,
+        itemNumber=None,
+        netWeight=None
+    ):
+        
+        self.grossWeight = grossWeight
+        self.manufacturingCountryCode = manufacturingCountryCode
+        self.quantityUnitOfMeasurement = quantityUnitOfMeasurement
+        self.commodityCode = commodityCode
+        self.quantity = quantity
+        self.unitPrice = unitPrice
+        self.itemDescription = itemDescription
+        self.itemNumber = itemNumber
+        self.netWeight = netWeight
 
 class ShipmentInfo(BaseModel):
 
